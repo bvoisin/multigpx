@@ -159,6 +159,9 @@ L.GPX = L.FeatureGroup.extend({
   get_author: function () {
     return this._info.author;
   },
+  get_link: function () {
+    return this._info.link;
+  },
   get_copyright: function () {
     return this._info.copyright;
   },
@@ -409,11 +412,22 @@ L.GPX = L.FeatureGroup.extend({
     }
     var author = xml.getElementsByTagName('author');
     if (author.length > 0) {
-      this._info.author = author[0].textContent;
+      const name = author[0].getElementsByTagName('name')
+      if (name.length > 0) {
+        this._info.author = name[0].textContent;
+      } else {
+        this._info.author = author[0].textContent;
+      }
     }
     var copyright = xml.getElementsByTagName('copyright');
     if (copyright.length > 0) {
       this._info.copyright = copyright[0].textContent;
+    }
+
+    var trk = xml.getElementsByTagName('trk')[0] || xml.getElementsByTagName('route')[0];
+    var link = trk.getElementsByTagName('link');
+    if (link.length > 0) {
+      this._info.link = link[0].attributes['href'].textContent;
     }
 
     var parseElements = options.gpx_options.parseElements;
