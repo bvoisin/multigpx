@@ -424,10 +424,10 @@ L.GPX = L.FeatureGroup.extend({
       this._info.copyright = copyright[0].textContent;
     }
 
-    var trk = xml.getElementsByTagName('trk')[0] || xml.getElementsByTagName('route')[0];
-    var link = trk.getElementsByTagName('link');
-    if (link.length > 0) {
-      this._info.link = link[0].attributes['href'].textContent;
+    const trk = xml.getElementsByTagName('trk')[0] || xml.getElementsByTagName('route')[0];
+    const link = trk.getElementsByTagName('link')[0] || xml.getElementsByTagName('link')[0];
+    if (link) {
+      this._info.link = link.attributes['href'].textContent;
     }
 
     var parseElements = options.gpx_options.parseElements;

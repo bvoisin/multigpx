@@ -32,8 +32,22 @@ const colors = [
   '#f30011'
 ]
 
+function filesInGpxFolder() {
+  return Promise.resolve([
+    'gpx/Aurore Ds - Course_pied_matinale.gpx',
+    'gpx/Benoit V - Redécouverte de l’enclos.gpx',
+    'gpx/Cyril - Trail_en_pleine_nature.gpx',
+    'gpx/Julien Chatel - Petit_tour_jardin_Villemin_dont_6_30_30_.gpx',
+    'gpx/Lucie G - Sortie à vélo le midi.gpx',
+    'gpx/Thierry - Mon 1 km.gpx',
+    'gpx/Valentine - activity_5751256774.gpx',
+  ])
+}
+
 function main() {
-  const gpxFiles$ = awsGistGpxFiles(); // Promise of url[]
+  const gpxFiles$ =
+    awsGistGpxFiles(); // Promise of url[]
+  // filesInGpxFolder();
 
   var mymap = L.map('mapid').setView([48.864716, 2.349014], 13);
 
@@ -65,13 +79,14 @@ function main() {
       new L.GPX(gpxFile, gpxOptions).on('loaded', function (e) {
         const gpx = e.target;
         //  mymap.fitBounds(e.target.getBounds());
-        console.log({gpx})
         const link = gpx.get_link();
         let author = gpx.get_author();
+        const popupText = '<b>' + gpx.get_name() + '</b>' +
+          (author ? '<br><i>' + author + '</i>' : '') +
+          (link ? '<br><a href="' + link + '" target="_blank">Link</a>' : '');
+        console.log(popupText, {gpx})
         gpx.bindPopup(
-          '<b>' + gpx.get_name() + '</b>' +
-          (author ? '<i>' + author + '</i>' : '') +
-          (link ? '<br><a href="' + link + '">Link</a>' : '')
+          popupText
         );
       }).addTo(mymap);
     });
