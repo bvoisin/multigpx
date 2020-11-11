@@ -73,7 +73,10 @@ function main() {
         },
         polyline_options: {
           color: colors[(index * 37) % colors.length],
-          opacity: 0.75
+          opacity: 0.75,
+          weight: 3,
+          fill: true,
+          fillOpacity: 0.1
         }
       };
       new L.GPX(gpxFile, gpxOptions).on('loaded', function (e) {
